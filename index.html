@@ -1,1 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>87 CLUB</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#171427;color:white;font-family:Arial,sans-serif;padding-bottom:85px}
+header{padding:18px;display:flex;justify-content:space-between;align-items:center;background:#201a38}
+.logo{font-size:27px;font-weight:900;color:#bd91ff}
+.auth{display:flex;gap:8px}
+.auth button{padding:10px 15px;border-radius:25px;border:1px solid #9874e9;background:transparent;color:white}
+.auth .register{background:linear-gradient(100deg,#ed64b8,#557dff);border:0}
+.categories{display:flex;gap:10px;padding:16px;overflow-x:auto}
+.categories button{white-space:nowrap;padding:13px 19px;border-radius:30px;border:1px solid #79649e;background:#29213e;color:white;font-size:15px}
+.categories button.active{background:linear-gradient(100deg,#e85cba,#527dff)}
+.notice{margin:5px 15px;padding:14px;background:#29213e;border-radius:25px;text-align:center;color:#e1d6f8;font-size:13px}
+h3{margin:20px 16px 12px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;padding:12px}
+.game{background:#29213e;border-radius:13px;overflow:hidden;text-align:center;border:1px solid #493967;cursor:pointer}
+.game .art{height:115px;display:flex;justify-content:center;align-items:center;font-size:42px;background:linear-gradient(140deg,#422c73,#25203e)}
+.game p{font-size:12px;font-weight:bold;padding:0 3px}
+.feature{margin:15px;padding:20px;background:linear-gradient(130deg,#39235f,#242047);border-radius:17px;text-align:center}
+.feature .art{font-size:65px}
+.feature button{padding:13px 30px;border:0;border-radius:25px;color:white;background:linear-gradient(90deg,#ec65b5,#527bff);font-weight:bold}
+.bottom{position:fixed;bottom:0;left:0;width:100%;height:75px;background:#302451;border-top:1px solid #7964ac;display:flex;justify-content:space-around;align-items:center}
+.bottom button{background:none;border:0;color:white;font-size:12px}
+.bottom span{display:block;font-size:22px;margin-bottom:4px}
+#noticeBox{margin:15px;padding:15px;background:#29213e;border-radius:12px;text-align:center}
+</style>
+</head>
+<body>
+<header>
+<div class="logo">💎 87 CLUB</div>
+<div class="auth">
+<button onclick="show('Login feature coming soon')">Login</button>
+<button class="register" onclick="show('Registration feature coming soon')">Register</button>
+</div>
+</header>
 
+<div class="categories">
+<button class="active" onclick="category(this,'Popular')">🔥 Popular</button>
+<button onclick="category(this,'Lottery')">🎱 Lottery</button>
+<button onclick="category(this,'Mini Games')">🚀 Mini Games</button>
+</div>
+
+<div class="notice">🔊 Welcome to 87 CLUB • Practice and enjoy!</div>
+
+<h3 id="heading">Popular Games</h3>
+<div class="grid">
+<div class="game" onclick="show('Color Practice selected')"><div class="art">🎨</div><p>COLOR PRACTICE</p></div>
+<div class="game" onclick="show('Number Match selected')"><div class="art">🔢</div><p>NUMBER MATCH</p></div>
+<div class="game" onclick="show('Lucky Wheel selected')"><div class="art">🎡</div><p>LUCKY WHEEL</p></div>
+<div class="game" onclick="show('Memory Game selected')"><div class="art">🧠</div><p>MEMORY GAME</p></div>
+<div class="game" onclick="show('Puzzle Game selected')"><div class="art">🧩</div><p>PUZZLE GAME</p></div>
+<div class="game" onclick="show('Speed Challenge selected')"><div class="art">⚡</div><p>SPEED CHALLENGE</p></div>
+</div>
+
+<div class="feature">
+<div class="art">🏆</div>
+<h2>Welcome to 87 CLUB</h2>
+<p>Play free practice games and improve your skills.</p>
+<button onclick="show('Choose a practice game above!')">PLAY NOW</button>
+</div>
+
+<div id="noticeBox">⭐ 87 CLUB • Practice Points: 1000<br><small>Virtual points only. No cash value.</small></div>
+
+<nav class="bottom">
+<button onclick="show('Home')"><span>🏠</span>Home</button>
+<button onclick="show('Activity')"><span>🎮</span>Activity</button>
+<button onclick="show('Promotions')"><span>🎁</span>Promotion</button>
+<button onclick="show('Wallet: virtual points only')"><span>💎</span>Wallet</button>
+<button onclick="show('Account')"><span>👤</span>Account</button>
+</nav>
+
+<script>
+function show(message){
+document.getElementById('noticeBox').innerHTML=message;
+}
+function category(button,name){
+document.querySelectorAll('.categories button').forEach(b=>b.classList.remove('active'));
+button.classList.add('active');
+document.getElementById('heading').textContent=name+' Games';
+}
+</script>
+</body>
+</html>
