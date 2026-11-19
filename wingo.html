@@ -1,0 +1,151 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>87 CLUB - Wingo Practice</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#171329;color:white;font-family:Arial}
+header{padding:18px;background:#251a43;display:flex;justify-content:space-between;align-items:center}
+h1{color:#c18aff;margin:0}
+.wallet{background:#403052;padding:12px;border-radius:12px}
+main{padding:16px;max-width:500px;margin:auto}
+.panel{background:#291e40;padding:18px;border-radius:16px;margin:16px 0}
+h2{text-align:center;color:#d4aaff}
+.tabs,.colors{display:flex;gap:9px}
+button{border:0;padding:14px;border-radius:10px;font-weight:bold;color:white;cursor:pointer}
+.tabs button{flex:1;background:#403052}
+.tabs button.active{background:#9854e9}
+.timer{text-align:center;font-size:45px;color:#ffce70;font-weight:bold;margin:24px}
+.colors button{flex:1}
+.red{background:#e94359}
+.green{background:#16a878}
+.violet{background:#9148df}
+input{width:100%;padding:14px;border:0;border-radius:9px;margin:12px 0;font-size:17px}
+.bet{width:100%;background:linear-gradient(90deg,#d34cc9,#665aff)}
+.result{text-align:center;font-size:20px;margin:18px}
+.small{text-align:center;color:#c5b8d9;font-size:13px}
+.history{display:flex;gap:10px;flex-wrap:wrap}
+.ball{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:bold}
+</style>
+</head>
+<body>
+<header>
+<h1>💎 87 CLUB</h1>
+<div class="wallet">🪙 <span id="balance">10000</span></div>
+</header>
+<main>
+<div class="panel">
+<h2>WINGO PRACTICE</h2>
+<div class="tabs">
+<button class="active" onclick="setTime(1,this)">1 Min</button>
+<button onclick="setTime(3,this)">3 Min</button>
+<button onclick="setTime(5,this)">5 Min</button>
+</div>
+<p class="small">Round: <span id="round">1</span></p>
+<div class="timer" id="timer">01:00</div>
+<p class="small">Select your color</p>
+<div class="colors">
+<button class="red" onclick="choose('Red')">RED</button>
+<button class="green" onclick="choose('Green')">GREEN</button>
+<button class="violet" onclick="choose('Violet')">VIOLET</button>
+</div>
+</div>
+
+<div class="panel">
+<h2>Demo Wallet</h2>
+<input id="amount" type="number" min="1" value="100" placeholder="Enter coins">
+<p class="small">Selected: <span id="selected">None</span></p>
+<button class="bet" onclick="placeBet()">PLACE DEMO BET</button>
+<div class="result" id="message">Choose a color</div>
+<p class="small">Virtual coins only • No real money</p>
+</div>
+
+<div class="panel">
+<h2>Recent Results</h2>
+<div class="history" id="history">No results yet</div>
+</div>
+</main>
+
+<script>
+let balance=10000,minutes=1,seconds=60,round=1;
+let selected='',bet=null,history=[];
+const $=id=>document.getElementById(id);
+
+function showBalance(){
+$('balance').textContent=balance;
+}
+function showTimer(){
+let m=Math.floor(seconds/60),s=seconds%60;
+$('timer').textContent=
+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+}
+function setTime(m,btn){
+minutes=m;
+seconds=m*60;
+round=1;
+bet=null;
+selected='';
+document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));
+btn.classList.add('active');
+$('selected').textContent='None';
+$('message').textContent='New practice round';
+$('round').textContent=round;
+showTimer();
+}
+function choose(color){
+selected=color;
+$('selected').textContent=color;
+}
+function placeBet(){
+let amount=Number($('amount').value);
+if(!selected)return $('message').textContent='Select a color first!';
+if(bet)return $('message').textContent='Already placed this round!';
+if(!Number.isInteger(amount)||amount<1||amount>balance)
+return $('message').textContent='Invalid coin amount!';
+bet={color:selected,amount};
+balance-=amount;
+showBalance();
+$('message').textContent='Demo bet placed!';
+}
+function finishRound(){
+let colors=['Red','Green','Violet'];
+let result=colors[Math.floor(Math.random()*3)];
+history.unshift(result);
+history=history.slice(0,10);
+$('history').innerHTML=history.map(c=>
+'<span class="ball" style="background:'+
+(c==='Red'?'#e94359':c==='Green'?'#16a878':'#9148df')+
+'">'+c[0]+'</span>').join('');
+if(bet){
+if(bet.color===result){
+let prize=bet.amount*(result==='Violet'?4:2);
+balance+=prize;
+$('message').textContent='You won '+prize+' demo coins!';
+}else{
+$('message').textContent='Result: '+result+' - Try again!';
+}
+}else{
+$('message').textContent='Result: '+result;
+}
+showBalance();
+bet=null;
+selected='';
+$('selected').textContent='None';
+round++;
+$('round').textContent=round;
+seconds=minutes*60;
+showTimer();
+}
+setInterval(()=>{
+seconds--;
+if(seconds<=0)finishRound();
+showTimer();
+},1000);
+showTimer();
+showBalance();
+</script>
+</body>
+</html>
